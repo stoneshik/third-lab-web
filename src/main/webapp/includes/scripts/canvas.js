@@ -127,18 +127,15 @@ function drawLabels(ctx, canvasObj, color) {
     ctx.strokeText('y', center.x + step.x, Math.round(step.y * 0.6));
 }
 
-function drawDot(ctx, canvasObj, colorForFirst, otherColor) {
-    const args = getArgsForGraph(canvas);
-    if (!args) {
-        return;
-    }
-    let x, y, r;
+function drawDots(ctx, canvasObj, colorWhenDotIsHit, colorWhenDotIsNotHit, dotsData) {
+    let isHit, x, y, r;
     const center = canvasObj.center;
     const stepR = canvasObj.r.step;
-    for (let i=0; i < args.x.length; i++) {
-        x = Number.parseFloat(args['x'][i]);
-        y = Number.parseFloat(args['y'][i]);
-        r = Number.parseFloat(args['r'][i]);
+    for (let i=0; i < dotsData.dots.length; i++) {
+        isHit = dotsData.dots[i].isHit;
+        x = dotsData.dots[i].x;
+        y = dotsData.dots[i].y;
+        r = dotsData.dots[i].r;
         ctx.beginPath();
         ctx.arc(
             center.x + ((x / r) * stepR.x * 2),
@@ -147,16 +144,55 @@ function drawDot(ctx, canvasObj, colorForFirst, otherColor) {
             0,
             Math.PI * 2
         );
-        if (i === 0) {
-            ctx.fillStyle = colorForFirst;
+        if (isHit) {
+            ctx.fillStyle = colorWhenDotIsHit;
         } else {
-            ctx.fillStyle = otherColor;
+            ctx.fillStyle = colorWhenDotIsNotHit;
         }
         ctx.fill();
     }
 }
 
-function drawCanvas(canvas, canvasObj) {
+// работа с данными точек, считываемыми из таблицы результатов
+function newDot(isHit, x, y, r) {
+    return {isHit: isHit, x: x, y: y, r: r};
+}
+function addDot(dotsData, dot) {
+    dotsData.dots.push(dot);
+}
+function cleanDotsData(dotsData) {
+    dotsData.dots = [];
+}
+
+function loadDataFromTable(dataTable, dotsData) {
+    const resultRows = dataTable.querySelectorAll('tbody > tr');
+    const stringWhenIsHit = 'Точка попала';
+    let isHit, x, y, r;
+    dotsData.r = 0;  // Для разных r канвас должен быть разным
+    for (let i=0; i < resultRows.length; i++) {
+        if (resultRows[i].length !== 4) {
+            continue;
+        }
+        isHit = (resultRows[i].children[0].innerText.trim() === stringWhenIsHit);
+        x = parseFloat(resultRows[i].children[1].innerText.trim());
+        y = parseFloat(resultRows[i].children[2].innerText.trim());
+        r = parseFloat(resultRows[i].children[3].innerText.trim());
+        if (!isNaN(x) && !isNaN(y) && !isNaN(r) && x != null && y != null && r != null) {
+            if (dotsData.r === 0) {
+                dotsData.r = r;
+            }
+            if (r !== dotsData.r) {
+                break;
+            }
+            addDot(
+                dotsData,
+                newDot(isHit, x, y, r)
+            );
+        }
+    }
+}
+
+function drawCanvas(canvas, canvasObj, dotsData) {
     const ctx = canvas.getContext('2d');
     findCenter(canvasObj);
     drawArea(ctx, canvasObj, '#4A90E2');
@@ -164,5 +200,47 @@ function drawCanvas(canvas, canvasObj) {
     drawAxes(ctx, canvasObj, 'black');
     drawSerifs(ctx, canvasObj, 'black');
     drawLabels(ctx, canvasObj, 'black');
-    drawDot(ctx, canvasObj, '#F77A52', '#000FFF');
+    if (dotsData.dots.length !== 0) {
+        drawDots(ctx, canvasObj, '#F77A52', '#000FFF');
+    }
+}
+
+// Объекты канваса
+const canvas = document.getElementById('canvas');
+const canvasObj = {
+    width: canvas.width,
+    height: canvas.height,
+    font: "16px serif",
+    center: {x: 0, y: 0},
+    dotArgs: {x: 0, y: 0, r: 0},
+    step: {x: 17, y: 17},
+    serif: {
+        numSerif: {x: 2, y: 2},
+        numStepForSerif: {x: 3, y: 3}
+    },
+    r: {},
+    lineWidth: 1,
+};
+canvasObj.r = {
+    step: {
+        x: canvasObj.serif.numStepForSerif.x * canvasObj.step.x,
+        y: canvasObj.serif.numStepForSerif.y * canvasObj.step.y
+    }
+}
+
+const canvasError = document.getElementById('canvas-error');
+
+function calcCoordinates(canvasObj, offsetX, offsetY, r) {
+    return {
+        'x': ((offsetX - canvasObj.center.x) / (canvasObj.r.step.x * 2)) * r,
+        'y': -(((offsetY - canvasObj.center.y) / (canvasObj.r.step.y * 2)) * r)
+    };
+}
+
+function updateCanvas() {
+    const dotsData = {dots: [], r: 0};
+    const dataTable = document.getElementById('results');
+    if (dataTable === undefined) {return;}
+    loadDataFromTable(dataTable, dotsData);
+    drawCanvas(canvas, canvasObj, dotsData);
 }

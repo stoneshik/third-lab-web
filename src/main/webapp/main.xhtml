@@ -6,7 +6,15 @@
    <ui:define name="title">Основная страница</ui:define>
    <ui:define name="wrapper_content">
       <div id="left_col">
-         <canvas id="canvas" height="600" width="600" x="0" y="0" r="0"></canvas>
+         <h:commandButton>
+            <canvas id="canvas" height="600" width="600" x="0" y="0" r="0"></canvas>
+            <f:ajax execute="dot-form" render="results"/>
+         </h:commandButton>
+         <h:form id="canvas_hidden_form">
+            <h:inputHidden id="x_hidden" value="#{dotManagedBean.newDotBean.x}"/>
+            <h:inputHidden id="y_hidden" value="#{dotManagedBean.newDotBean.y}"/>
+            <h:inputHidden id="r_hidden" value="#{dotManagedBean.newDotBean.r}"/>
+         </h:form>
          <p id="canvas-error" class="error"></p>
       </div>
       <div id="center_col">
@@ -17,15 +25,16 @@
                   <f:validateLength for="r" maximum="10"/>
                   <f:validateDoubleRange minimum="-4.0" maximum="4.0"/>
                </h:inputHidden>
-               <h:commandLink id="x1" value="-4" onclick="selectX(-4.0, nameIdForm + ':x1'); return false;" />
-               <h:commandLink id="x2" value="-3" onclick="selectX(-3.0, nameIdForm + ':x2'); return false;" />
-               <h:commandLink id="x3" value="-2" onclick="selectX(-2.0, nameIdForm + ':x3'); return false;" />
-               <h:commandLink id="x4" value="-1" onclick="selectX(-1.0, nameIdForm + ':x4'); return false;" />
-               <h:commandLink id="x5" value="0" onclick="selectX(0.0, nameIdForm + ':x5'); return false;" />
-               <h:commandLink id="x6" value="1" onclick="selectX(1.0, nameIdForm + ':x6'); return false;" />
-               <h:commandLink id="x7" value="2" onclick="selectX(2.0, nameIdForm + ':x7'); return false;" />
-               <h:commandLink id="x8" value="3" onclick="selectX(3.0, nameIdForm + ':x8'); return false;" />
-               <h:commandLink id="x9" value="4" onclick="selectX(4.0, nameIdForm + ':x9'); return false;" />
+               <h:commandLink id="x1" value="-4" onclick="selectX(-4.0, nameIdForm + ':x1'); return false;"/>
+               <h:commandLink id="x2" value="-3" onclick="selectX(-3.0, nameIdForm + ':x2'); return false;"/>
+               <h:commandLink id="x3" value="-2" onclick="selectX(-2.0, nameIdForm + ':x3'); return false;"/>
+               <h:commandLink id="x4" value="-1" onclick="selectX(-1.0, nameIdForm + ':x4'); return false;"/>
+               <h:commandLink id="x5" value="0" onclick="selectX(0.0, nameIdForm + ':x5'); return false;"
+                              styleClass="option-command-link-selected"/>
+               <h:commandLink id="x6" value="1" onclick="selectX(1.0, nameIdForm + ':x6'); return false;"/>
+               <h:commandLink id="x7" value="2" onclick="selectX(2.0, nameIdForm + ':x7'); return false;"/>
+               <h:commandLink id="x8" value="3" onclick="selectX(3.0, nameIdForm + ':x8'); return false;"/>
+               <h:commandLink id="x9" value="4" onclick="selectX(4.0, nameIdForm + ':x9'); return false;"/>
             </div>
             <div class="form-row">
                <h:inputText id="y" value="#{dotManagedBean.newDotBean.y}" requiredMessage="Аргумент Y обязателен" required="true"
@@ -44,9 +53,9 @@
                <h:outputLabel for="r" class="text-input-label">R:</h:outputLabel>
             </div>
             <h:commandButton id="submit-button" value="Отправить" action="#{dotManagedBean.addNewDot()}">
-               <f:ajax execute="dot-form" render="results"/>
+               <f:ajax execute="dot-form" render="results" onevent=""/>
             </h:commandButton>
-            <h:messages id="form-error" errorClass="error" />
+            <h:messages id="form-error" errorClass="error"/>
          </h:form>
          <h3><h:link value="Перейти на стартовую страницу" outcome="back-to-startpage" /></h3>
       </div>
@@ -82,8 +91,8 @@
       </div>
    </ui:define>
    <ui:define name="footer_content">
-      <script type="text/javascript" src="includes/scripts/jquery.min.js"></script>
-      <script type="text/javascript" src="includes/scripts/filter.js"></script>
+      <!--<script type="text/javascript" src="includes/scripts/jquery.min.js"></script>
+      <script type="text/javascript" src="includes/scripts/filter.js"></script>-->
       <script type="text/javascript" src="includes/scripts/canvas.js"></script>
       <script type="text/javascript" src="includes/scripts/main.js"></script>
    </ui:define>
