@@ -1,5 +1,7 @@
 package lab.third.beans;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Model;
 import lab.third.models.DotBean;
 
 import java.io.Serializable;
@@ -7,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@Model
+@ApplicationScoped
 public class DotManagedBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private DotBean newDot = new DotBean();

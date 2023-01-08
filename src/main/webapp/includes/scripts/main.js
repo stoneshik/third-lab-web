@@ -91,7 +91,7 @@ function canvasHandler(e) {
 
 // Отображение времени в соотвествии с временным поясом у клиента
 const results = document.getElementById("results");
-const times = results.getElementsByClassName("time");
+//const times = results.getElementsByClassName("time");
 
 function parseTime(t) {
     const regexp = /(\d+)(?::(\d\d))?\s*(p?)/;
@@ -118,7 +118,7 @@ window.onload = function() {
     //form.addEventListener('submit', formHandler);
     drawCanvas(canvas, canvasObj);
     canvas.addEventListener('click', canvasHandler);
-    if (times.length > 0) {timeReduction(times);}
+    //if (times.length > 0) {timeReduction(times);}
 }
 
 // Функции вызываются из шаблона
