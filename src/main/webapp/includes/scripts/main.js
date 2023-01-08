@@ -91,7 +91,6 @@ function canvasHandler(e) {
 
 // Отображение времени в соотвествии с временным поясом у клиента
 const results = document.getElementById("results");
-//const times = results.getElementsByClassName("time");
 
 function parseTime(t) {
     const regexp = /(\d+)(?::(\d\d))?\s*(p?)/;

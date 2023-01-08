@@ -13,7 +13,6 @@
          <h:form class="ui-form" id="dot-form">
             <h3>Проверка попадания точки</h3>
             <div class="form-row option-command-link">
-               <!--@elvariable id="dotManagedBean" type="lab.third.beans.DotManagedBean"-->
                <h:inputHidden id="x" value="#{dotManagedBean.newDotBean.x}" requiredMessage="Аргумент Y обязателен" required="true">
                   <f:validateLength for="r" maximum="10"/>
                   <f:validateDoubleRange minimum="-4.0" maximum="4.0"/>
@@ -53,28 +52,31 @@
       </div>
       <div id="right_col">
          <h2>Результаты проверки</h2>
-         <!--@elvariable id="dotManagedBean" type="lab.third.beans.DotManagedBean"-->
-         <h:panelGrid rendered="#{dotManagedBean.isEmpty()}" class="results">
-            <h:outputText class="response neutral single-column" value="Пока здесь пусто"/>
-         </h:panelGrid>
-         <h:dataTable value="#{dotManagedBean.dotBeans}" var="dot" rendered="#{not dotManagedBean.isEmpty()}"
+         <h:dataTable value="#{dotManagedBean.dotBeans}" var="dot"
                       id="results" class="results">
-            <h:column>
+            <h:panelGroup rendered="#{dotManagedBean.isEmpty()}">
+               <h:outputText class="response neutral single-column" value="Пока здесь пусто"/>
+            </h:panelGroup>
+            <h:column rendered="#{not dotManagedBean.isEmpty()}">
                <f:facet name="header">Результат</f:facet>
-               <h:outputText value="Точка попала" rendered="#{dot.hit}"/>
-               <h:outputText value="Точка не попала" rendered="#{not dot.hit}"/>
+               <h:outputText value="Точка попала" rendered="#{dot.isHit}"/>
+               <h:outputText value="Точка не попала" rendered="#{not dot.isHit}"/>
             </h:column>
-            <h:column>
+            <h:column rendered="#{not dotManagedBean.isEmpty()}">
                <f:facet name="header">x</f:facet>
                <h:outputText value="#{dot.x}"/>
             </h:column>
-            <h:column>
+            <h:column rendered="#{not dotManagedBean.isEmpty()}">
                <f:facet name="header">y</f:facet>
                <h:outputText value="#{dot.y}"/>
             </h:column>
-            <h:column>
+            <h:column rendered="#{not dotManagedBean.isEmpty()}">
                <f:facet name="header">r</f:facet>
                <h:outputText value="#{dot.r}"/>
+            </h:column>
+            <h:column rendered="#{not dotManagedBean.isEmpty()}">
+               <f:facet name="header">Время отправки</f:facet>
+               <h:outputText value="#{dot.timeDispatch}"/>
             </h:column>
          </h:dataTable>
       </div>

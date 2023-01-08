@@ -1,7 +1,8 @@
 package lab.third.models;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.Clock;
+import java.time.LocalTime;
 
 public class DotBean implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -9,7 +10,7 @@ public class DotBean implements Serializable {
     private Double y = 0.0;
     private Double r = 1.0;
     private boolean isHit = false;
-    private LocalDate timeDispatch;
+    private LocalTime timeDispatch = LocalTime.now(Clock.systemUTC());
     private Long timeLead;
 
     public Double getX() {
@@ -24,8 +25,16 @@ public class DotBean implements Serializable {
         return r;
     }
 
-    public boolean isHit() {
+    public boolean getIsHit() {
         return isHit;
+    }
+
+    public LocalTime getTimeDispatch() {
+        return timeDispatch;
+    }
+
+    public Long getTimeLead() {
+        return timeLead;
     }
 
     public void setX(Double x) {
@@ -40,8 +49,16 @@ public class DotBean implements Serializable {
         this.r = r;
     }
 
-    public void setHit(boolean hit) {
+    public void setIsHit(boolean hit) {
         this.isHit = hit;
+    }
+
+    public void setTimeDispatch(LocalTime timeDispatch) {
+        this.timeDispatch = timeDispatch;
+    }
+
+    public void setTimeLead(Long timeLead) {
+        this.timeLead = timeLead;
     }
 
     private boolean dotIsHit() {
@@ -52,7 +69,8 @@ public class DotBean implements Serializable {
         );
     }
 
-    public void updateHitState() {
+    public void updateInfo() {
         this.isHit = this.dotIsHit();
+        this.timeDispatch = LocalTime.now(Clock.systemUTC());
     }
 }

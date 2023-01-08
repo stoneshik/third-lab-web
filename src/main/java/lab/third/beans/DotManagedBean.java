@@ -38,7 +38,7 @@ public class DotManagedBean implements Serializable {
 
     public synchronized void addNewDot() {
         Long startTime = System.nanoTime();
-        this.newDot.updateHitState();
+        this.newDot.updateInfo();
         this.dotBeans.add(this.newDot);
         this.newDot = new DotBean();
 
