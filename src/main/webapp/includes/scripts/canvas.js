@@ -170,7 +170,8 @@ function loadDataFromTable(dataTable, dotsData) {
     let isHit, x, y, r;
     dotsData.r = 0;  // Для разных r канвас должен быть разным
     for (let i=0; i < resultRows.length; i++) {
-        if (resultRows[i].length !== 4) {
+        if (resultRows[i].children.length === undefined || resultRows[i].children.length == null
+            || resultRows[i].children.length < 4) {
             continue;
         }
         isHit = (resultRows[i].children[0].innerText.trim() === stringWhenIsHit);
@@ -194,6 +195,7 @@ function loadDataFromTable(dataTable, dotsData) {
 
 function drawCanvas(canvas, canvasObj, dotsData) {
     const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     findCenter(canvasObj);
     drawArea(ctx, canvasObj, '#4A90E2');
     drawGrid(ctx, canvasObj, 'lightgray');
@@ -201,7 +203,7 @@ function drawCanvas(canvas, canvasObj, dotsData) {
     drawSerifs(ctx, canvasObj, 'black');
     drawLabels(ctx, canvasObj, 'black');
     if (dotsData.dots.length !== 0) {
-        drawDots(ctx, canvasObj, '#F77A52', '#000FFF');
+        drawDots(ctx, canvasObj, '#F77A52', '#000FFF', dotsData);
     }
 }
 
@@ -242,5 +244,13 @@ function updateCanvas() {
     const dataTable = document.getElementById('results');
     if (dataTable === undefined) {return;}
     loadDataFromTable(dataTable, dotsData);
+    console.log(dataTable);
+    console.log(dotsData);
     drawCanvas(canvas, canvasObj, dotsData);
+}
+
+function updateCanvasByAjax(onevent) {
+    if (onevent.status === 'success') {
+        updateCanvas();
+    }
 }

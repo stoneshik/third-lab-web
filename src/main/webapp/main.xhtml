@@ -53,7 +53,7 @@
                <h:outputLabel for="r" class="text-input-label">R:</h:outputLabel>
             </div>
             <h:commandButton id="submit-button" value="Отправить" action="#{dotManagedBean.addNewDot()}">
-               <f:ajax execute="dot-form" render="results" onevent=""/>
+               <f:ajax execute="dot-form" render="results" onevent="updateCanvasByAjax"/>
             </h:commandButton>
             <h:messages id="form-error" errorClass="error"/>
          </h:form>
