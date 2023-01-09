@@ -79,8 +79,8 @@
             </h:panelGroup>
             <h:column rendered="#{not dotManagedBean.isEmpty()}">
                <f:facet name="header">Результат</f:facet>
-               <h:outputText value="Точка попала" rendered="#{dot.isHit}"/>
-               <h:outputText value="Точка не попала" rendered="#{not dot.isHit}"/>
+               <h:outputText value="Попала" rendered="#{dot.isHit}"/>
+               <h:outputText value="Не попала" rendered="#{not dot.isHit}"/>
             </h:column>
             <h:column rendered="#{not dotManagedBean.isEmpty()}">
                <f:facet name="header">x</f:facet>
@@ -97,6 +97,10 @@
             <h:column rendered="#{not dotManagedBean.isEmpty()}">
                <f:facet name="header">Время отправки</f:facet>
                <h:outputText value="#{dot.timeDispatch}"/>
+            </h:column>
+            <h:column rendered="#{not dotManagedBean.isEmpty()}">
+               <f:facet name="header">Время обработки</f:facet>
+               <h:outputText value="#{dot.timeLead / 1000} мкс"/>
             </h:column>
          </h:dataTable>
       </div>

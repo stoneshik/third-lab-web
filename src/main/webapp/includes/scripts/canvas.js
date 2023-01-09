@@ -148,7 +148,7 @@ function addDot(dotsData, dot) {
 }
 function loadDataFromTable(dataTable, dotsData) {
     const resultRows = dataTable.querySelectorAll('tbody > tr');
-    const stringWhenIsHit = 'Точка попала';
+    const stringWhenIsHit = 'Попала';
     let isHit, x, y, r;
     dotsData.r = 0;  // Для разных r канвас должен быть разным
     for (let i=0; i < resultRows.length; i++) {
