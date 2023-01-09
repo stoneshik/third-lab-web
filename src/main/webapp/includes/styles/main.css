@@ -65,6 +65,9 @@ label {
     margin: 0 0 0 25px;
 }
 /*стили формы */
+#clean_form {
+    padding: 10px;
+}
 .ui-form {
     max-width: 450px;
     padding: 80px 30px 30px;
@@ -229,10 +232,9 @@ fieldset input:checked {
     margin: 10px 0;
     background-color: #FFF;
 }
-.response td {
-    display: inline-block;
+.response td,
+.results td {
     padding: 5px;
-    border-right: 1px solid #EEE;
     color: #EEE;
     font-size: 18px;
     font-weight: 300;
@@ -254,13 +256,13 @@ fieldset input:checked {
     width: 100%;
     border-top: 1px solid #EEE;
 }
-.response.neutral {
+.neutral {
     background-color: #CCC;
 }
-.response.success {
+.success {
     background-color: #339966;
 }
-.response.fail {
+.fail {
     background-color: #CC0000;
 }
 .response.neutral td {

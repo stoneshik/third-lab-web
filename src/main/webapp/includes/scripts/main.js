@@ -85,6 +85,27 @@ function timeReduction(dataTable) {
 }
 /* Функции редактирующие отображение времени в результатах у клиента в соответствии с его временным поясом */
 
+/* Функция раскраски строк таблицы результатов */
+function paintingRows(dataTable) {
+    const resultRows = dataTable.querySelectorAll('tbody > tr');
+    const stringWhenIsHit = 'Попала';
+    const classWhenIsHit = 'success';
+    const classWhenIsNotHit = 'fail';
+    let isHit;
+    for (let i=0; i < resultRows.length; i++) {
+        if (resultRows[i].children.length === undefined || resultRows[i].children.length == null
+            || resultRows[i].children.length < 4) {
+            continue;
+        }
+        isHit = (resultRows[i].children[0].innerText.trim() === stringWhenIsHit);
+        if (isHit) {
+            addClass(resultRows[i], classWhenIsHit);
+        } else {
+            addClass(resultRows[i], classWhenIsNotHit);
+        }
+    }
+}
+/* Функция раскраски строк таблицы результатов */
 
 /* Функции канваса */
 // Запись координат клика мыши по канвасу в атрибуты x и y канваса
@@ -120,6 +141,7 @@ function updateCanvas() {
     if (dataTable === undefined) {return;}
     loadDataFromTable(dataTable, dotsData);
     drawCanvas(canvas, canvasObj, dotsData);
+    paintingRows(dataTable);
     timeReduction(dataTable);
 }
 function updateCanvasByAjax(onEvent) {
@@ -129,6 +151,8 @@ function updateCanvasByAjax(onEvent) {
 }
 /* Функции канваса */
 
+
+/* Функции очищения таблицы данных */
 function cleanDataTable(dataTable) {
     const thead = dataTable.querySelector('thead');
     const tbody = dataTable.querySelector('tbody');
@@ -144,6 +168,7 @@ function removeAllDots() {
     cleanDataTable(dataTable);
     updateCanvas();
 }
+/* Функции очищения таблицы данных */
 
 /* Функции вызываемые из шаблона */
 function cleanAllCommandLink() {
