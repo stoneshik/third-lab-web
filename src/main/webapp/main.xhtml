@@ -19,7 +19,7 @@
                <f:validateLength for="r" maximum="10"/>
                <f:validateDoubleRange minimum="1.0" maximum="4.0"/>
             </h:inputHidden>
-            <h:commandLink id="submit_button_hidden_form" actionListener="#{dotManagedBean.addNewDot()}">
+            <h:commandLink id="submit_button_hidden_form" actionListener="#{dotManagedBean.addNewDot()}" onclick="onclickCanvasHandler();">
                <canvas id="canvas" height="600" width="600" x="0" y="0"></canvas>
                <f:ajax execute="canvas_hidden_form" render="results" onevent="handlerHiddenFormForCanvas"/>
             </h:commandLink>

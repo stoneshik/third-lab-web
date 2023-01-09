@@ -109,52 +109,30 @@ function updateCanvasByAjax(onEvent) {
     }
 }
 
+function onclickCanvasHandler() {
+    const offsetX = parseInt(canvas.getAttribute('x').trim());
+    const offsetY = parseInt(canvas.getAttribute('y').trim());
+    if (offsetX === undefined || offsetY === undefined || isNaN(offsetX) || isNaN(offsetY)
+        || offsetX == null || offsetY == null) {
+        return;
+    }
+    const r = parseFloat(mainForm.fields.r.value.trim());
+    if (r === undefined || isNaN(r) || r == null) {
+        return;
+    }
+    const xy = calcCoordinates(canvasObj, offsetX, offsetY, r);
+    const x = xy['x'].toFixed(4);
+    const y = xy['y'].toFixed(4);
+    if (x === undefined || y === undefined || x == null || y == null) {
+        return;
+    }
+    setAttr(hiddenForm.fields.x, 'value', x);
+    setAttr(hiddenForm.fields.y, 'value', y);
+    setAttr(hiddenForm.fields.r, 'value', r);
+}
+
 function handlerHiddenFormForCanvas(onEvent) {
-    if (onEvent.status === 'begin') {
-        setTimeout(
-            () => {
-                //console.log('r');
-                const offsetX = parseInt(canvas.getAttribute('x').trim());
-                const offsetY = parseInt(canvas.getAttribute('y').trim());
-                if (offsetX === undefined || offsetY === undefined || isNaN(offsetX) || isNaN(offsetY)
-                    || offsetX == null || offsetY == null) {
-                    return;
-                }
-                const r = parseFloat(mainForm.fields.r.value.trim());
-                if (r === undefined || isNaN(r) || r == null) {
-                    return;
-                }
-                const xy = calcCoordinates(canvasObj, offsetX, offsetY, r);
-                const x = xy['x'].toFixed(4);
-                const y = xy['y'].toFixed(4);
-                if (x === undefined || y === undefined || x == null || y == null) {
-                    return;
-                }
-                setAttr(hiddenForm.fields.x, 'value', x);
-                setAttr(hiddenForm.fields.y, 'value', y);
-                setAttr(hiddenForm.fields.r, 'value', r);
-            }, 100
-        );
-        /*const offsetX = parseInt(canvas.getAttribute('x').trim());
-        const offsetY = parseInt(canvas.getAttribute('y').trim());
-        if (offsetX === undefined || offsetY === undefined || isNaN(offsetX) || isNaN(offsetY)
-            || offsetX == null || offsetY == null) {
-            return;
-        }
-        const r = parseFloat(mainForm.fields.r.value.trim());
-        if (r === undefined || isNaN(r) || r == null) {
-            return;
-        }
-        const xy = calcCoordinates(canvasObj, offsetX, offsetY, r);
-        const x = xy['x'];
-        const y = xy['y'];
-        if (x === undefined || y === undefined || x == null || y == null) {
-            return;
-        }
-        setAttr(hiddenForm.fields.x, 'value', x);
-        setAttr(hiddenForm.fields.y, 'value', y);
-        setAttr(hiddenForm.fields.r, 'value', r);*/
-    } else if (onEvent.status === 'success') {
+    if (onEvent.status === 'success') {
         //console.log(onEvent);
         updateCanvas();
     }
