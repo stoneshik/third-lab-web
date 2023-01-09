@@ -1,17 +1,3 @@
-function getArgsForGraph(canvas) {
-    let arrayX = canvas.getAttribute('x').split(';');
-    let arrayY = canvas.getAttribute('y').split(';');
-    let arrayR = canvas.getAttribute('r').split(';');
-
-    if (arrayX.length === 0 || arrayY.length === 0 || arrayR.length === 0) {
-        return null;
-    }
-    if (arrayX.length !== arrayY.length || arrayY.length !== arrayR.length) {
-        return null;
-    }
-    return {'x': arrayX, 'y': arrayY, 'r': arrayR};
-}
-
 function findCenter(canvasObj) {
     canvasObj.center.x = Math.round(canvasObj.width / canvasObj.step.x / 2) * canvasObj.step.x;
     canvasObj.center.y = Math.round(canvasObj.height / canvasObj.step.y / 2) * canvasObj.step.y;
@@ -203,7 +189,7 @@ function drawCanvas(canvas, canvasObj, dotsData) {
     drawSerifs(ctx, canvasObj, 'black');
     drawLabels(ctx, canvasObj, 'black');
     if (dotsData.dots.length !== 0) {
-        drawDots(ctx, canvasObj, '#F77A52', '#000FFF', dotsData);
+        drawDots(ctx, canvasObj, '#25D500', '#F60018', dotsData);
     }
 }
 
@@ -244,13 +230,5 @@ function updateCanvas() {
     const dataTable = document.getElementById('results');
     if (dataTable === undefined) {return;}
     loadDataFromTable(dataTable, dotsData);
-    console.log(dataTable);
-    console.log(dotsData);
     drawCanvas(canvas, canvasObj, dotsData);
-}
-
-function updateCanvasByAjax(onevent) {
-    if (onevent.status === 'success') {
-        updateCanvas();
-    }
 }

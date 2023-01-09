@@ -6,14 +6,23 @@
    <ui:define name="title">Основная страница</ui:define>
    <ui:define name="wrapper_content">
       <div id="left_col">
-         <h:commandButton>
-            <canvas id="canvas" height="600" width="600" x="0" y="0" r="0"></canvas>
-            <f:ajax execute="dot-form" render="results"/>
-         </h:commandButton>
          <h:form id="canvas_hidden_form">
-            <h:inputHidden id="x_hidden" value="#{dotManagedBean.newDotBean.x}"/>
-            <h:inputHidden id="y_hidden" value="#{dotManagedBean.newDotBean.y}"/>
-            <h:inputHidden id="r_hidden" value="#{dotManagedBean.newDotBean.r}"/>
+            <h:inputHidden id="x_hidden" value="#{dotManagedBean.newDotBean.x}">
+               <f:validateLength for="r" maximum="10"/>
+               <f:validateDoubleRange minimum="-4.0" maximum="4.0"/>
+            </h:inputHidden>
+            <h:inputHidden id="y_hidden" value="#{dotManagedBean.newDotBean.y}">
+               <f:validateLength for="r" maximum="10"/>
+               <f:validateDoubleRange minimum="-5.0" maximum="3.0"/>
+            </h:inputHidden>
+            <h:inputHidden id="r_hidden" value="#{dotManagedBean.newDotBean.r}">
+               <f:validateLength for="r" maximum="10"/>
+               <f:validateDoubleRange minimum="1.0" maximum="4.0"/>
+            </h:inputHidden>
+            <h:commandLink id="submit_button_hidden_form" actionListener="#{dotManagedBean.addNewDot()}">
+               <canvas id="canvas" height="600" width="600" x="0" y="0"></canvas>
+               <f:ajax execute="canvas_hidden_form" render="results" onevent="handlerHiddenFormForCanvas"/>
+            </h:commandLink>
          </h:form>
          <p id="canvas-error" class="error"></p>
       </div>
@@ -25,16 +34,16 @@
                   <f:validateLength for="r" maximum="10"/>
                   <f:validateDoubleRange minimum="-4.0" maximum="4.0"/>
                </h:inputHidden>
-               <h:commandLink id="x1" value="-4" onclick="selectX(-4.0, nameIdForm + ':x1'); return false;"/>
-               <h:commandLink id="x2" value="-3" onclick="selectX(-3.0, nameIdForm + ':x2'); return false;"/>
-               <h:commandLink id="x3" value="-2" onclick="selectX(-2.0, nameIdForm + ':x3'); return false;"/>
-               <h:commandLink id="x4" value="-1" onclick="selectX(-1.0, nameIdForm + ':x4'); return false;"/>
-               <h:commandLink id="x5" value="0" onclick="selectX(0.0, nameIdForm + ':x5'); return false;"
+               <h:commandLink id="x1" value="-4" onclick="selectX(-4.0, mainForm.name + ':x1'); return false;"/>
+               <h:commandLink id="x2" value="-3" onclick="selectX(-3.0, mainForm.name + ':x2'); return false;"/>
+               <h:commandLink id="x3" value="-2" onclick="selectX(-2.0, mainForm.name + ':x3'); return false;"/>
+               <h:commandLink id="x4" value="-1" onclick="selectX(-1.0, mainForm.name + ':x4'); return false;"/>
+               <h:commandLink id="x5" value="0" onclick="selectX(0.0, mainForm.name + ':x5'); return false;"
                               styleClass="option-command-link-selected"/>
-               <h:commandLink id="x6" value="1" onclick="selectX(1.0, nameIdForm + ':x6'); return false;"/>
-               <h:commandLink id="x7" value="2" onclick="selectX(2.0, nameIdForm + ':x7'); return false;"/>
-               <h:commandLink id="x8" value="3" onclick="selectX(3.0, nameIdForm + ':x8'); return false;"/>
-               <h:commandLink id="x9" value="4" onclick="selectX(4.0, nameIdForm + ':x9'); return false;"/>
+               <h:commandLink id="x6" value="1" onclick="selectX(1.0, mainForm.name + ':x6'); return false;"/>
+               <h:commandLink id="x7" value="2" onclick="selectX(2.0, mainForm.name + ':x7'); return false;"/>
+               <h:commandLink id="x8" value="3" onclick="selectX(3.0, mainForm.name + ':x8'); return false;"/>
+               <h:commandLink id="x9" value="4" onclick="selectX(4.0, mainForm.name + ':x9'); return false;"/>
             </div>
             <div class="form-row">
                <h:inputText id="y" value="#{dotManagedBean.newDotBean.y}" requiredMessage="Аргумент Y обязателен" required="true"
