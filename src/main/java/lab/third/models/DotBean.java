@@ -2,7 +2,8 @@ package lab.third.models;
 
 import java.io.Serializable;
 import java.time.Clock;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DotBean implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -10,7 +11,7 @@ public class DotBean implements Serializable {
     private Double y = 0.0;
     private Double r = 1.0;
     private boolean isHit = false;
-    private LocalTime timeDispatch = LocalTime.now(Clock.systemUTC());
+    private LocalDateTime timeDispatch = LocalDateTime.now(Clock.systemUTC());
     private Long timeLead;
 
     public Double getX() {
@@ -29,7 +30,7 @@ public class DotBean implements Serializable {
         return isHit;
     }
 
-    public LocalTime getTimeDispatch() {
+    public LocalDateTime getTimeDispatch() {
         return timeDispatch;
     }
 
@@ -53,7 +54,7 @@ public class DotBean implements Serializable {
         this.isHit = hit;
     }
 
-    public void setTimeDispatch(LocalTime timeDispatch) {
+    public void setTimeDispatch(LocalDateTime timeDispatch) {
         this.timeDispatch = timeDispatch;
     }
 
@@ -69,8 +70,12 @@ public class DotBean implements Serializable {
         );
     }
 
+    public String getFormatDateTime() {
+        return this.timeDispatch.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+    }
+
     public void updateInfo() {
         this.isHit = this.dotIsHit();
-        this.timeDispatch = LocalTime.now(Clock.systemUTC());
+        this.timeDispatch = LocalDateTime.now(Clock.systemUTC());
     }
 }

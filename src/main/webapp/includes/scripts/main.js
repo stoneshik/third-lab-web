@@ -1,4 +1,4 @@
-// Объекты форм
+/* Объекты форм */
 const mainForm = {
     name: 'dot-form',
     form: undefined,
@@ -26,8 +26,10 @@ function setHiddenFormData(hiddenForm) {
         r: document.getElementById(hiddenForm.name + ':r_hidden'),
     };
 }
+/* Объекты форм */
 
-// Вспомогательные функции
+
+/* Вспомогательные функции */
 function setAttr(element, valueName, value) {
     element.setAttribute(valueName, value);
 }
@@ -40,10 +42,22 @@ function removeClass(element, className) {
 function addClass(element, nameClass) {
     element.classList.add(nameClass);
 }
+function writeText(element, text) {
+    if (element == null) {
+        return;
+    }
+    if (typeof element.innerText !== 'undefined') {
+        // IE8
+        element.innerText = text;
+    } else {
+        // Остальные браузеры
+        element.textContent = text;
+    }
+}
+/* Вспомогательные функции */
 
-// Отображение времени в соотвествии с временным поясом у клиента
-const results = document.getElementById("results");
 
+/* Функции редактирующие отображение времени в результатах у клиента в соответствии с его временным поясом */
 function parseTime(t) {
     const regexp = /(\d+)(?::(\d\d))?\s*(p?)/;
     let date = new Date();
@@ -52,19 +66,27 @@ function parseTime(t) {
     date.setUTCMinutes(parseInt(time[2]) || 0);
     return date;
 }
-
-function timeReduction(times) {
+function timeReduction(dataTable) {
+    const resultRows = dataTable.querySelectorAll('tbody > tr');
     let timeDate;
-    for (let i=0; i < times.length; i++) {
-        timeDate = parseTime(times[i].textContent);
+    let timeDateElement;
+    for (let i=0; i < resultRows.length; i++) {
+        if (resultRows[i].children.length === undefined || resultRows[i].children.length == null
+            || resultRows[i].children.length < 5) {
+            continue;
+        }
+        timeDateElement = resultRows[i].children[4];
+        timeDate = parseTime(timeDateElement.innerText.trim());
         writeText(
-            times[i].textContent,
+            timeDateElement,
             timeDate.getHours() + ':' + timeDate.getMinutes() + ':' + timeDate.getSeconds()
         );
     }
 }
+/* Функции редактирующие отображение времени в результатах у клиента в соответствии с его временным поясом */
 
 
+/* Функции канваса */
 // Запись координат клика мыши по канвасу в атрибуты x и y канваса
 function canvasHandler(e) {
     canvas.setAttribute('x', e.offsetX);
@@ -92,17 +114,23 @@ function clickOnCanvasHandler() {
     setAttr(hiddenForm.fields.y, 'value', y);
     setAttr(hiddenForm.fields.r, 'value', r);
 }
-
-// Вызов всех функций
-window.onload = function() {
-    setMainFormData(mainForm);
-    setHiddenFormData(hiddenForm);
-    canvas.addEventListener('click', canvasHandler);
-    updateCanvas();
-    //if (times.length > 0) {timeReduction(times);}
+function updateCanvas() {
+    const dotsData = {dots: [], r: 0};
+    const dataTable = document.getElementById('results');
+    if (dataTable === undefined) {return;}
+    loadDataFromTable(dataTable, dotsData);
+    drawCanvas(canvas, canvasObj, dotsData);
+    timeReduction(dataTable);
 }
+function updateCanvasByAjax(onEvent) {
+    if (onEvent.status === 'success') {
+        updateCanvas();
+    }
+}
+/* Функции канваса */
 
-// Функции вызываются из шаблона
+
+/* Функции вызываемые из шаблона */
 function cleanAllCommandLink() {
     const elements = document.querySelectorAll('.option-command-link-selected');
     for (let i=0; i < elements.length; i++) {
@@ -118,3 +146,13 @@ function selectCommandLink(element, num, idSelect) {
 function selectX(num, idSelect) {
     selectCommandLink(mainForm.fields.x, num, idSelect);
 }
+/* Функции вызываемые из шаблона */
+
+/* Вызов всех функций */
+window.onload = function() {
+    setMainFormData(mainForm);
+    setHiddenFormData(hiddenForm);
+    canvas.addEventListener('click', canvasHandler);
+    updateCanvas();
+}
+/* Вызов всех функций */

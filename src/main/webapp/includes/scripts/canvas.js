@@ -220,17 +220,3 @@ function calcCoordinates(canvasObj, offsetX, offsetY, r) {
         'y': -(((offsetY - canvasObj.center.y) / (canvasObj.r.step.y * 2)) * r)
     };
 }
-
-function updateCanvas() {
-    const dotsData = {dots: [], r: 0};
-    const dataTable = document.getElementById('results');
-    if (dataTable === undefined) {return;}
-    loadDataFromTable(dataTable, dotsData);
-    drawCanvas(canvas, canvasObj, dotsData);
-}
-
-function updateCanvasByAjax(onEvent) {
-    if (onEvent.status === 'success') {
-        updateCanvas();
-    }
-}
