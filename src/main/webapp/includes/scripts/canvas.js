@@ -139,17 +139,13 @@ function drawDots(ctx, canvasObj, colorWhenDotIsHit, colorWhenDotIsNotHit, dotsD
     }
 }
 
-// работа с данными точек, считываемыми из таблицы результатов
+// Работа с данными точек, считываемыми из таблицы результатов
 function newDot(isHit, x, y, r) {
     return {isHit: isHit, x: x, y: y, r: r};
 }
 function addDot(dotsData, dot) {
     dotsData.dots.push(dot);
 }
-function cleanDotsData(dotsData) {
-    dotsData.dots = [];
-}
-
 function loadDataFromTable(dataTable, dotsData) {
     const resultRows = dataTable.querySelectorAll('tbody > tr');
     const stringWhenIsHit = 'Точка попала';
@@ -231,4 +227,10 @@ function updateCanvas() {
     if (dataTable === undefined) {return;}
     loadDataFromTable(dataTable, dotsData);
     drawCanvas(canvas, canvasObj, dotsData);
+}
+
+function updateCanvasByAjax(onEvent) {
+    if (onEvent.status === 'success') {
+        updateCanvas();
+    }
 }

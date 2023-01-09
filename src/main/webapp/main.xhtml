@@ -19,18 +19,20 @@
                <f:validateLength for="r" maximum="10"/>
                <f:validateDoubleRange minimum="1.0" maximum="4.0"/>
             </h:inputHidden>
-            <h:commandLink id="submit_button_hidden_form" actionListener="#{dotManagedBean.addNewDot()}" onclick="onclickCanvasHandler();">
+            <h:commandLink id="submit_button_hidden_form" action="#{dotManagedBean.addNewDot()}"
+                           onclick="clickOnCanvasHandler();">
                <canvas id="canvas" height="600" width="600" x="0" y="0"></canvas>
-               <f:ajax execute="canvas_hidden_form" render="results" onevent="handlerHiddenFormForCanvas"/>
+               <f:ajax execute="canvas_hidden_form" render="results" onevent="updateCanvasByAjax"/>
             </h:commandLink>
+            <h:messages id="canvas-error" errorClass="error"/>
          </h:form>
-         <p id="canvas-error" class="error"></p>
       </div>
       <div id="center_col">
          <h:form class="ui-form" id="dot-form">
             <h3>Проверка попадания точки</h3>
             <div class="form-row option-command-link">
-               <h:inputHidden id="x" value="#{dotManagedBean.newDotBean.x}" requiredMessage="Аргумент Y обязателен" required="true">
+               <h:inputHidden id="x" value="#{dotManagedBean.newDotBean.x}" requiredMessage="Аргумент Y обязателен"
+                              required="true">
                   <f:validateLength for="r" maximum="10"/>
                   <f:validateDoubleRange minimum="-4.0" maximum="4.0"/>
                </h:inputHidden>
@@ -46,16 +48,16 @@
                <h:commandLink id="x9" value="4" onclick="selectX(4.0, mainForm.name + ':x9'); return false;"/>
             </div>
             <div class="form-row">
-               <h:inputText id="y" value="#{dotManagedBean.newDotBean.y}" requiredMessage="Аргумент Y обязателен" required="true"
-                            autocomplete="off">
+               <h:inputText id="y" value="#{dotManagedBean.newDotBean.y}" requiredMessage="Аргумент Y обязателен"
+                            required="true" autocomplete="off">
                   <f:validateLength for="r" maximum="10"/>
                   <f:validateDoubleRange minimum="-5.0" maximum="3.0"/>
                </h:inputText>
                <h:outputLabel for="y" class="text-input-label">Y:</h:outputLabel>
             </div>
             <div class="form-row">
-               <h:inputText id="r" value="#{dotManagedBean.newDotBean.r}" requiredMessage="Аргумент R обязателен" required="true"
-                            autocomplete="off">
+               <h:inputText id="r" value="#{dotManagedBean.newDotBean.r}" requiredMessage="Аргумент R обязателен"
+                            required="true" autocomplete="off">
                   <f:validateLength for="r" maximum="10"/>
                   <f:validateDoubleRange minimum="1.0" maximum="4.0"/>
                </h:inputText>
@@ -100,8 +102,6 @@
       </div>
    </ui:define>
    <ui:define name="footer_content">
-      <!--<script type="text/javascript" src="includes/scripts/jquery.min.js"></script>
-      <script type="text/javascript" src="includes/scripts/filter.js"></script>-->
       <script type="text/javascript" src="includes/scripts/canvas.js"></script>
       <script type="text/javascript" src="includes/scripts/main.js"></script>
    </ui:define>

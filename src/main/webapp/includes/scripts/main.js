@@ -1,6 +1,4 @@
-// Фильтрация и обработка формы
-//const nameIdForm = 'dot-form';
-// объекты форм
+// Объекты форм
 const mainForm = {
     name: 'dot-form',
     form: undefined,
@@ -29,7 +27,7 @@ function setHiddenFormData(hiddenForm) {
     };
 }
 
-// вспомогательные функции
+// Вспомогательные функции
 function setAttr(element, valueName, value) {
     element.setAttribute(valueName, value);
 }
@@ -41,43 +39,6 @@ function removeClass(element, className) {
 }
 function addClass(element, nameClass) {
     element.classList.add(nameClass);
-}
-
-/*function canvasHandler(e) {
-    cleanTextInElement(canvasError);
-    const regex = '^[-+]?[0-9]{0,9}(?:[.,][0-9]{1,9})*$';
-    let valueR = fieldR.value.trim();
-    if (valueR === '') {
-        writeText(canvasError, "Параметр R не задан");
-        return 0;
-    }
-    let resultR = valueR.match(regex);
-    if (resultR == null) {
-        writeText(canvasError, "Параметр R не правильный");
-        return 0;
-    }
-    valueR = parseFloat(valueR);
-    if (valueR < 1.0 || valueR > 5.0) {
-        writeText(canvasError, "Параметр R выходит за допустимый диапазон");
-        return 0;
-    }
-    let xy = calcCoordinates(canvasObj, e.offsetX, e.offsetY, valueR);
-    if (!filterForm(xy['x'], xy['y'], valueR, formError)) {
-        return 0;
-    }
-    /*$.post(
-        '/ControllerServlet',
-        {'x': xy['x'], 'y': xy['y'], 'r': valueR},
-        function() {
-            location.reload();
-        }
-    );*/
-    //submitForm(xy['x'], xy['y'], valueR);
-//}
-
-function canvasHandler(e) {
-    canvas.setAttribute('x', e.offsetX);
-    canvas.setAttribute('y', e.offsetY);
 }
 
 // Отображение времени в соотвествии с временным поясом у клиента
@@ -103,13 +64,14 @@ function timeReduction(times) {
     }
 }
 
-function updateCanvasByAjax(onEvent) {
-    if (onEvent.status === 'success') {
-        updateCanvas();
-    }
-}
 
-function onclickCanvasHandler() {
+// Запись координат клика мыши по канвасу в атрибуты x и y канваса
+function canvasHandler(e) {
+    canvas.setAttribute('x', e.offsetX);
+    canvas.setAttribute('y', e.offsetY);
+}
+// Обновление значений формы при клике на канвас
+function clickOnCanvasHandler() {
     const offsetX = parseInt(canvas.getAttribute('x').trim());
     const offsetY = parseInt(canvas.getAttribute('y').trim());
     if (offsetX === undefined || offsetY === undefined || isNaN(offsetX) || isNaN(offsetY)
@@ -131,24 +93,14 @@ function onclickCanvasHandler() {
     setAttr(hiddenForm.fields.r, 'value', r);
 }
 
-function handlerHiddenFormForCanvas(onEvent) {
-    if (onEvent.status === 'success') {
-        //console.log(onEvent);
-        updateCanvas();
-    }
-}
-
 // Вызов всех функций
 window.onload = function() {
-    //form.addEventListener('submit', formHandler);
     setMainFormData(mainForm);
     setHiddenFormData(hiddenForm);
-    updateCanvas();
-    //drawCanvas(canvas, canvasObj);
     canvas.addEventListener('click', canvasHandler);
+    updateCanvas();
     //if (times.length > 0) {timeReduction(times);}
 }
-
 
 // Функции вызываются из шаблона
 function cleanAllCommandLink() {
