@@ -103,6 +103,10 @@
                <h:outputText value="#{dot.timeLead / 1000} мкс"/>
             </h:column>
          </h:dataTable>
+         <h:form>
+            <h:commandButton id="clean-button" value="Очистить" action="#{dotManagedBean.removeAllDots()}"
+                          onclick="removeAllDots();"/>
+         </h:form>
       </div>
    </ui:define>
    <ui:define name="footer_content">

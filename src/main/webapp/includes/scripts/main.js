@@ -129,6 +129,21 @@ function updateCanvasByAjax(onEvent) {
 }
 /* Функции канваса */
 
+function cleanDataTable(dataTable) {
+    const thead = dataTable.querySelector('thead');
+    const tbody = dataTable.querySelector('tbody');
+    if (thead === undefined || tbody === undefined || thead == null || tbody == null) {
+        return;
+    }
+    thead.remove();
+    tbody.remove();
+    dataTable.createTBody();
+}
+function removeAllDots() {
+    const dataTable = document.getElementById('results');
+    cleanDataTable(dataTable);
+    updateCanvas();
+}
 
 /* Функции вызываемые из шаблона */
 function cleanAllCommandLink() {

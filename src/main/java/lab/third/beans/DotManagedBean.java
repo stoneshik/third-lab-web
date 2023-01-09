@@ -43,4 +43,8 @@ public class DotManagedBean implements Serializable {
         this.dotBeans.add(0, this.newDot);
         this.newDot = new DotBean();
     }
+
+    public synchronized void removeAllDots() {
+        this.dotBeans.clear();
+    }
 }
