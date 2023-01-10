@@ -59,11 +59,12 @@ function writeText(element, text) {
 
 /* Функции редактирующие отображение времени в результатах у клиента в соответствии с его временным поясом */
 function parseTime(t) {
-    const regexp = /(\d+)(?::(\d\d))?\s*(p?)/;
+    const regexp = /(\d+)(?::(\d{1,2}))(?::(\d{1,2}))/;
     let date = new Date();
     let time = t.match(regexp);
-    date.setUTCHours(parseInt(time[1]) + (time[3] ? 12 : 0));
-    date.setUTCMinutes(parseInt(time[2]) || 0);
+    date.setUTCHours(parseInt(time[1]));
+    date.setUTCMinutes(parseInt(time[2]));
+    date.setUTCSeconds(parseInt(time[3]));
     return date;
 }
 function timeReduction(dataTable) {
