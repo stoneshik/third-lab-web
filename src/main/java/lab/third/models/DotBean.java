@@ -1,18 +1,29 @@
 package lab.third.models;
 
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Entity
 public class DotBean implements Serializable {
     private static final long serialVersionUID = 1L;
+    @Id
+    @SequenceGenerator(name = "jpaSequence", sequenceName = "JPA_SEQUENCE", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jpaSequence")
+    private int id;
     private Double x = 0.0;
     private Double y = 0.0;
     private Double r = 1.0;
     private boolean isHit = false;
     private LocalDateTime timeDispatch = LocalDateTime.now(Clock.systemUTC());
     private Long timeLead;
+
+    public int getId() {
+        return id;
+    }
 
     public Double getX() {
         return x;
@@ -36,6 +47,10 @@ public class DotBean implements Serializable {
 
     public Long getTimeLead() {
         return timeLead;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setX(Double x) {
