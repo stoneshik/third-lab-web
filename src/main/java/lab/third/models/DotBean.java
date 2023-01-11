@@ -65,7 +65,7 @@ public class DotBean implements Serializable {
     private boolean dotIsHit() {
         return (
             (this.x <= 0 && this.y >= 0 && Math.pow(this.x, 2) + Math.pow(this.y, 2) <= Math.pow(this.r / 2, 2)) ||
-            (this.x >= 0 && this.y >= 0 && this.y <= -this.x + (this.r / 2)) ||
+            (this.x >= 0 && this.y >= 0 && this.y <= (this.r - this.x) / 2) ||
             (this.x >= 0 && this.y <= 0 && this.x <= this.r && this.y >= -this.r)
         );
     }

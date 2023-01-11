@@ -1,6 +1,5 @@
-<ui:composition template="/includes/template.xhtml"
+<ui:composition template="/template.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:define name="title">Стартовая страница</ui:define>
@@ -14,6 +13,6 @@
         </div>
     </ui:define>
     <ui:define name="footer_content">
-        <script type="text/javascript" src="includes/scripts/clock.js"></script>
+        <h:outputScript library="js" name="clock.js"/>
     </ui:define>
 </ui:composition>
