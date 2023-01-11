@@ -245,16 +245,22 @@ function canvasHandler(e) {
     canvasObj.canvas.setAttribute('x', e.offsetX);
     canvasObj.canvas.setAttribute('y', e.offsetY);
 }
+function updateHiddenFieldsForCanvas(hiddenForm, x, y, r) {
+    setAttr(hiddenForm.fields.x, 'value', x);
+    setAttr(hiddenForm.fields.y, 'value', y);
+    setAttr(hiddenForm.fields.r, 'value', r);
+}
 // Обновление значений формы при клике на канвас
 function clickOnCanvasHandler() {
+    const r = parseFloat(mainForm.fields.r.value.trim());
+    if (r === undefined || isNaN(r) || r == null || r < 1 || r > 4) {
+        updateHiddenFieldsForCanvas(hiddenForm, 0, 0, r);
+        return;
+    }
     const offsetX = parseInt(canvasObj.canvas.getAttribute('x').trim());
     const offsetY = parseInt(canvasObj.canvas.getAttribute('y').trim());
     if (offsetX === undefined || offsetY === undefined || isNaN(offsetX) || isNaN(offsetY)
         || offsetX == null || offsetY == null) {
-        return;
-    }
-    const r = parseFloat(mainForm.fields.r.value.trim());
-    if (r === undefined || isNaN(r) || r == null) {
         return;
     }
     const xy = calcCoordinates(canvasObj, offsetX, offsetY, r);
@@ -263,9 +269,7 @@ function clickOnCanvasHandler() {
     if (x === undefined || y === undefined || x == null || y == null) {
         return;
     }
-    setAttr(hiddenForm.fields.x, 'value', x);
-    setAttr(hiddenForm.fields.y, 'value', y);
-    setAttr(hiddenForm.fields.r, 'value', r);
+    updateHiddenFieldsForCanvas(hiddenForm, x, y, r);
 }
 function updateCanvas() {
     const dotsData = {dots: [], r: 0};
