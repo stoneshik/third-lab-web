@@ -1,4 +1,4 @@
-const clock = document.getElementById('clock');
+let clock = undefined;
 
 function writeText(element, text) {
     if (typeof element.innerText !== 'undefined') {
@@ -32,6 +32,7 @@ function setTime() {
 }
 
 window.onload = function() {
+    clock = document.getElementById('clock');
     const timeOut = 11_000;
     setTime(clock);
     setInterval(setTime, timeOut);
