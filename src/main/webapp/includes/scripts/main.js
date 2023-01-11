@@ -157,6 +157,7 @@ function validateRange(valueX, valueY, valueR, formError) {
     return true;
 }
 function formHandler(form) {
+    cleanTextInElement(form.formError);
     const rawFieldValues = getValuesStringFromFieldForForm(
         form.fields.x,
         form.fields.y,
@@ -164,7 +165,7 @@ function formHandler(form) {
         form.formError
     );
     if (rawFieldValues === '') {
-        return;
+        return false;
     }
     const parsedValues = parseValuesFromStringForForm(
         rawFieldValues['x'],
@@ -173,9 +174,9 @@ function formHandler(form) {
         form.formError
     );
     if (parsedValues === '') {
-        return;
+        return false;
     }
-    validateRange(
+    return validateRange(
         parsedValues['x'],
         parsedValues['y'],
         parsedValues['r'],
