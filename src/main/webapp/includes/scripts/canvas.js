@@ -174,10 +174,16 @@ function loadDataFromTable(dataTable, dotsData) {
         }
     }
 }
+function calcCoordinates(canvasObj, offsetX, offsetY, r) {
+    return {
+        'x': ((offsetX - canvasObj.center.x) / (canvasObj.r.step.x * 2)) * r,
+        'y': -(((offsetY - canvasObj.center.y) / (canvasObj.r.step.y * 2)) * r)
+    };
+}
 
-function drawCanvas(canvas, canvasObj, dotsData) {
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+function drawCanvas(canvasObj, dotsData) {
+    const ctx = canvasObj.canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvasObj.canvas.width, canvasObj.canvas.height);
     findCenter(canvasObj);
     drawArea(ctx, canvasObj, '#4A90E2');
     drawGrid(ctx, canvasObj, 'lightgray');
@@ -189,11 +195,11 @@ function drawCanvas(canvas, canvasObj, dotsData) {
     }
 }
 
-// Объекты канваса
-const canvas = document.getElementById('canvas');
+/* Объект канваса */
 const canvasObj = {
-    width: canvas.width,
-    height: canvas.height,
+    canvas: undefined,
+    width: undefined,
+    height: undefined,
     font: "16px serif",
     center: {x: 0, y: 0},
     dotArgs: {x: 0, y: 0, r: 0},
@@ -205,18 +211,15 @@ const canvasObj = {
     r: {},
     lineWidth: 1,
 };
-canvasObj.r = {
-    step: {
-        x: canvasObj.serif.numStepForSerif.x * canvasObj.step.x,
-        y: canvasObj.serif.numStepForSerif.y * canvasObj.step.y
-    }
-}
-
-const canvasError = document.getElementById('canvas-error');
-
-function calcCoordinates(canvasObj, offsetX, offsetY, r) {
-    return {
-        'x': ((offsetX - canvasObj.center.x) / (canvasObj.r.step.x * 2)) * r,
-        'y': -(((offsetY - canvasObj.center.y) / (canvasObj.r.step.y * 2)) * r)
+function setCanvasData(canvasObj) {
+    canvasObj.canvas = document.getElementById('canvas');
+    canvasObj.width = canvasObj.canvas.width;
+    canvasObj.height = canvasObj.canvas.height;
+    canvasObj.r = {
+        step: {
+            x: canvasObj.serif.numStepForSerif.x * canvasObj.step.x,
+            y: canvasObj.serif.numStepForSerif.y * canvasObj.step.y
+        }
     };
 }
+/* Объект канваса */

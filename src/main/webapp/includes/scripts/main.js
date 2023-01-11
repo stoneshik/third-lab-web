@@ -1,14 +1,15 @@
 /* Объекты форм */
 const mainForm = {
-    name: 'dot-form',
+    name: 'dot_form',
     form: undefined,
     fields: {x: undefined, y: undefined, r: undefined},
-    formError: document.getElementById('form-error'),
+    formError: undefined,
 };
 const hiddenForm = {
     name: 'canvas_hidden_form',
     form: undefined,
     fields: {x: undefined, y: undefined, r: undefined},
+    formError: undefined,
 };
 function setMainFormData(mainForm) {
     mainForm.form = document.getElementById(mainForm.name);
@@ -17,6 +18,7 @@ function setMainFormData(mainForm) {
         y: document.getElementById(mainForm.name + ':y'),
         r: document.getElementById(mainForm.name + ':r'),
     };
+    mainForm.formError = document.getElementById('form_error');
 }
 function setHiddenFormData(hiddenForm) {
     hiddenForm.form = document.getElementById(hiddenForm.name);
@@ -25,6 +27,7 @@ function setHiddenFormData(hiddenForm) {
         y: document.getElementById(hiddenForm.name + ':y_hidden'),
         r: document.getElementById(hiddenForm.name + ':r_hidden'),
     };
+    hiddenForm.formError = document.getElementById('canvas_error');
 }
 /* Объекты форм */
 
@@ -54,7 +57,132 @@ function writeText(element, text) {
         element.textContent = text;
     }
 }
+function cleanTextInElement(element) {
+    writeText(element, '');
+}
+function findValueFromFieldset(fieldset) {
+    if (fieldset == null || fieldset.elements == null) {
+        return '';
+    }
+    for (let i=0; i < fieldset.elements.length - 1; i++) {
+        let input = fieldset.elements[i];
+        if (input.checked) {
+            return input.value.trim();
+        }
+    }
+    return '';
+}
 /* Вспомогательные функции */
+
+
+/* Функции валидации формы */
+function writeErrorMessages(elementError, stringForOneError, stringForManyErrors, args) {
+    let stringArr = [];
+    for (let key in args) {
+        if (args[key] === '' || args[key] == null) {
+            stringArr.push(key);
+        }
+    }
+    let stringArrCount = stringArr.length;
+    if (stringArrCount === 1) {
+        writeText(elementError, stringForOneError + stringArr[0]);
+        return;
+    }
+    let stringErr = stringForManyErrors;
+    for (let i=0; i < stringArrCount; i++) {
+        if (i > 0) {
+            stringErr += ",";
+        }
+        stringErr += " " + stringArr[i];
+    }
+    writeText(elementError, stringErr);
+}
+function getValuesStringFromFieldForForm(fieldX, fieldY, fieldR, formError) {
+    let valueX = fieldX.value.trim();
+    let valueY = fieldY.value.trim();
+    let valueR = fieldR.value.trim();
+
+    if (valueX === '' || valueY === '' || valueR === '') {
+        writeErrorMessages(
+            formError,
+            'Передан пустой аргумент: ',
+            'Переданы пустые аргументы:',
+            {'X': valueX, 'Y': valueY, 'R': valueR}
+        );
+        return '';
+    }
+    return {'x': valueX, 'y': valueY, 'r': valueR};
+}
+function parseValuesFromStringForForm(valueX, valueY, valueR, formError) {
+    const regex = '^[-+]?[0-9]{0,9}(?:[.,][0-9]{1,9})*$';
+    let resultX = valueX.match(regex);
+    let resultY = valueY.match(regex);
+    let resultR = valueR.match(regex);
+
+    if (resultX == null || resultY == null || resultR == null) {
+        writeErrorMessages(
+            formError,
+            'Неправильный формат аргумента: ',
+            'Неправильный формат аргументов:',
+            {'X': resultX, 'Y': resultY, 'R': resultR}
+        );
+        return '';
+    }
+    valueX = parseFloat(valueX);
+    valueY = parseFloat(valueY);
+    valueR = parseFloat(valueR);
+    return {'x': valueX, 'y': valueY, 'r': valueR};
+}
+function validateRange(valueX, valueY, valueR, formError) {
+    if ((valueX < -4.0 || valueX > 4.0) ||
+        (valueY < -5.0 || valueY > 3.0) ||
+        (valueR < 1.0 || valueR > 4.0)) {
+        if (valueX < -4.0 || valueX > 4.0) {
+            valueX = '';
+        }
+        if (valueY < -5.0 || valueY > 3.0) {
+            valueY = '';
+        }
+        if (valueR < 1.0 || valueR > 4.0) {
+            valueR = '';
+        }
+        writeErrorMessages(
+            formError,
+            'Значение выходит за допустимый диапазон: ',
+            'Значения выходят за допустимый диапазон:',
+            {'X': valueX, 'Y': valueY, 'R': valueR}
+        );
+        return false;
+    }
+    return true;
+}
+function formHandler(form) {
+    const rawFieldValues = getValuesStringFromFieldForForm(
+        form.fields.x,
+        form.fields.y,
+        form.fields.r,
+        form.formError
+    );
+    if (rawFieldValues === '') {
+        return;
+    }
+    const parsedValues = parseValuesFromStringForForm(
+        rawFieldValues['x'],
+        rawFieldValues['y'],
+        rawFieldValues['r'],
+        form.formError
+    );
+    if (parsedValues === '') {
+        return;
+    }
+    validateRange(
+        parsedValues['x'],
+        parsedValues['y'],
+        parsedValues['r'],
+        form.formError
+    );
+}
+/* Функции валидации формы */
 
 
 /* Функции редактирующие отображение времени в результатах у клиента в соответствии с его временным поясом */
@@ -86,6 +214,7 @@ function timeReduction(dataTable) {
 }
 /* Функции редактирующие отображение времени в результатах у клиента в соответствии с его временным поясом */
 
+
 /* Функция раскраски строк таблицы результатов */
 function paintingRows(dataTable) {
     const resultRows = dataTable.querySelectorAll('tbody > tr');
@@ -108,16 +237,17 @@ function paintingRows(dataTable) {
 }
 /* Функция раскраски строк таблицы результатов */
 
+
 /* Функции канваса */
 // Запись координат клика мыши по канвасу в атрибуты x и y канваса
 function canvasHandler(e) {
-    canvas.setAttribute('x', e.offsetX);
-    canvas.setAttribute('y', e.offsetY);
+    canvasObj.canvas.setAttribute('x', e.offsetX);
+    canvasObj.canvas.setAttribute('y', e.offsetY);
 }
 // Обновление значений формы при клике на канвас
 function clickOnCanvasHandler() {
-    const offsetX = parseInt(canvas.getAttribute('x').trim());
-    const offsetY = parseInt(canvas.getAttribute('y').trim());
+    const offsetX = parseInt(canvasObj.canvas.getAttribute('x').trim());
+    const offsetY = parseInt(canvasObj.canvas.getAttribute('y').trim());
     if (offsetX === undefined || offsetY === undefined || isNaN(offsetX) || isNaN(offsetY)
         || offsetX == null || offsetY == null) {
         return;
@@ -141,14 +271,9 @@ function updateCanvas() {
     const dataTable = document.getElementById('results');
     if (dataTable === undefined) {return;}
     loadDataFromTable(dataTable, dotsData);
-    drawCanvas(canvas, canvasObj, dotsData);
+    drawCanvas(canvasObj, dotsData);
     paintingRows(dataTable);
     timeReduction(dataTable);
-}
-function updateCanvasByAjax(onEvent) {
-    if (onEvent.status === 'success') {
-        updateCanvas();
-    }
 }
 /* Функции канваса */
 
@@ -171,6 +296,16 @@ function removeAllDots() {
 }
 /* Функции очищения таблицы данных */
 
+
+/* Функции обработки форм */
+function updateCanvasByAjax(onEvent) {
+    if (onEvent.status === 'success') {
+        updateCanvas();
+    }
+}
+/* Функции обработки форм */
+
+
 /* Функции вызываемые из шаблона */
 function cleanAllCommandLink() {
     const elements = document.querySelectorAll('.option-command-link-selected');
@@ -189,11 +324,13 @@ function selectX(num, idSelect) {
 }
 /* Функции вызываемые из шаблона */
 
+
 /* Вызов всех функций */
 window.onload = function() {
     setMainFormData(mainForm);
     setHiddenFormData(hiddenForm);
-    canvas.addEventListener('click', canvasHandler);
+    setCanvasData(canvasObj);
+    canvasObj.canvas.addEventListener('click', canvasHandler);
     updateCanvas();
 }
 /* Вызов всех функций */
