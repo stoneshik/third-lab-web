@@ -7,15 +7,15 @@
    <ui:define name="wrapper_content">
       <div id="left_col">
          <h:form id="canvas_hidden_form">
-            <h:inputHidden id="x_hidden" value="#{dotManagedBean.newDotBean.x}" required="true">
+            <h:inputHidden id="x_hidden" value="#{dotManagedBean.newDotBean.x}" required="true" autocomplete="false">
                <f:validateLength for="x_hidden" maximum="10"/>
                <f:validateDoubleRange for="x_hidden" minimum="-4.0" maximum="4.0"/>
             </h:inputHidden>
-            <h:inputHidden id="y_hidden" value="#{dotManagedBean.newDotBean.y}" required="true">
+            <h:inputHidden id="y_hidden" value="#{dotManagedBean.newDotBean.y}" required="true" autocomplete="false">
                <f:validateLength for="y_hidden" maximum="10"/>
                <f:validateDoubleRange for="y_hidden" minimum="-5.0" maximum="3.0"/>
             </h:inputHidden>
-            <h:inputHidden id="r_hidden" value="#{dotManagedBean.newDotBean.r}" required="true">
+            <h:inputHidden id="r_hidden" value="#{dotManagedBean.newDotBean.r}" required="true" autocomplete="false">
                <f:validateLength for="r_hidden" maximum="10"/>
                <f:validateDoubleRange for="r_hidden" minimum="1.0" maximum="4.0"/>
             </h:inputHidden>
@@ -31,7 +31,7 @@
          <h:form id="dot_form" class="ui-form">
             <h3>Проверка попадания точки</h3>
             <div class="form-row option-command-link">
-               <h:inputHidden id="x" value="#{dotManagedBean.newDotBean.x}" required="true">
+               <h:inputHidden id="x" value="#{dotManagedBean.newDotBean.x}" required="true" autocomplete="false">
                   <f:validateLength for="x" maximum="10"/>
                   <f:validateDoubleRange for="x" minimum="-4.0" maximum="4.0"/>
                </h:inputHidden>
