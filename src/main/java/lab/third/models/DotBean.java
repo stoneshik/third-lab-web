@@ -7,11 +7,13 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Table(name = "dotbean")
 @Entity
 public class DotBean implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "sequence_generator", sequenceName = "id_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
     private Long id;
     private Double x = 0.0;
     private Double y = 0.0;

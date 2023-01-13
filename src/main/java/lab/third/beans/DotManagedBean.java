@@ -10,7 +10,6 @@ import lab.third.models.DotBean;
 import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
 
 
 @Model
@@ -24,9 +23,22 @@ public class DotManagedBean implements Serializable {
     private List<DotBean> dotBeans = new CopyOnWriteArrayList<>();
 
     public DotManagedBean() {
-        initTransaction(manager -> this.dotBeans.addAll(
-                manager.createQuery("SELECT entity FROM DotBean entity", DotBean.class).getResultList()
-        ));
+        EntityManager manager = this.entityManagerFactory.createEntityManager();
+        try {
+            manager.getTransaction().begin();
+            this.dotBeans.addAll(
+                    manager.createQuery("SELECT e FROM DotBean e", DotBean.class).getResultList()
+            );
+            manager.getTransaction().commit();
+        } catch (Exception ex) {
+            if (manager.getTransaction().isActive()) {
+                manager.getTransaction().rollback();
+            }
+            System.out.println("An exception occurred during transaction.");
+            ex.printStackTrace();
+        } finally {
+            manager.close();
+        }
     }
 
     public DotBean getNewDotBean() {
@@ -53,7 +65,20 @@ public class DotManagedBean implements Serializable {
         long startTime = System.nanoTime();
         this.newDot.updateInfo();
         this.newDot.setTimeLead(System.nanoTime() - startTime);
-        this.initTransaction(manager -> manager.persist(this.newDot));
+        EntityManager manager = this.entityManagerFactory.createEntityManager();
+        try {
+            manager.getTransaction().begin();
+            manager.persist(this.newDot);
+            manager.getTransaction().commit();
+        } catch (Exception ex) {
+            if (manager.getTransaction().isActive()) {
+                manager.getTransaction().rollback();
+            }
+            System.out.println("An exception occurred during transaction.");
+            ex.printStackTrace();
+        } finally {
+            manager.close();
+        }
         this.dotBeans.add(0, this.newDot);
         this.newDot = new DotBean();
     }
@@ -74,22 +99,5 @@ public class DotManagedBean implements Serializable {
             manager.close();
         }
         this.dotBeans.clear();
-    }
-
-    private void initTransaction(Consumer<EntityManager> transaction) {
-        EntityManager manager = this.entityManagerFactory.createEntityManager();
-        try {
-            manager.getTransaction().begin();
-            transaction.accept(manager);
-            manager.getTransaction().commit();
-        } catch (Exception ex) {
-            if (manager.getTransaction().isActive()) {
-                manager.getTransaction().rollback();
-            }
-            System.out.println("An exception occurred during transaction.");
-            ex.printStackTrace();
-        } finally {
-            manager.close();
-        }
     }
 }
