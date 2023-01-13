@@ -5,7 +5,6 @@ import jakarta.enterprise.inject.Model;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import jakarta.persistence.Query;
 import lab.third.models.DotBean;
 
 import java.io.Serializable;
@@ -26,7 +25,7 @@ public class DotManagedBean implements Serializable {
 
     public DotManagedBean() {
         initTransaction(manager -> this.dotBeans.addAll(
-                manager.createQuery("SELECT result FROM DotBean result", DotBean.class).getResultList()
+                manager.createQuery("SELECT entity FROM DotBean entity", DotBean.class).getResultList()
         ));
     }
 
@@ -63,8 +62,7 @@ public class DotManagedBean implements Serializable {
         EntityManager manager = this.entityManagerFactory.createEntityManager();
         try {
             manager.getTransaction().begin();
-            Query query = manager.createQuery("DELETE FROM DotBean");
-            query.executeUpdate();
+            manager.createQuery("DELETE FROM DotBean").executeUpdate();
             manager.getTransaction().commit();
         } catch (Exception ex) {
             if (manager.getTransaction().isActive()) {

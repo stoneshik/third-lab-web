@@ -11,9 +11,8 @@ import java.time.format.DateTimeFormatter;
 public class DotBean implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "jpaSequence", sequenceName = "JPA_SEQUENCE", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jpaSequence")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private Double x = 0.0;
     private Double y = 0.0;
     private Double r = 1.0;
@@ -21,7 +20,7 @@ public class DotBean implements Serializable {
     private LocalDateTime timeDispatch = LocalDateTime.now(Clock.systemUTC());
     private Long timeLead;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -49,7 +48,7 @@ public class DotBean implements Serializable {
         return timeLead;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
