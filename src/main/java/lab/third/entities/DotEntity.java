@@ -1,4 +1,4 @@
-package lab.third.models;
+package lab.third.entities;
 
 import jakarta.persistence.*;
 
@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 @Table(name = "dotbean")
 @Entity
-public class DotBean implements Serializable {
+public class DotEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name = "sequence_generator", sequenceName = "id_sequence", allocationSize = 1)
