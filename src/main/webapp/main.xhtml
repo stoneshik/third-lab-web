@@ -8,15 +8,15 @@
    <ui:define name="wrapper_content">
       <div id="left_col">
          <h:form id="canvas_hidden_form">
-            <h:inputHidden id="x_hidden" value="#{dotManagedBean.newDotEntity.x}" required="true" autocomplete="off">
+            <h:inputHidden id="x_hidden" value="#{dotManagedBean.currentEntity.x}" required="true" autocomplete="off">
                <f:validateLength maximum="10"/>
                <f:validateDoubleRange minimum="-4.0" maximum="4.0"/>
             </h:inputHidden>
-            <h:inputHidden id="y_hidden" value="#{dotManagedBean.newDotEntity.y}" required="true" autocomplete="off">
+            <h:inputHidden id="y_hidden" value="#{dotManagedBean.currentEntity.y}" required="true" autocomplete="off">
                <f:validateLength maximum="10"/>
                <f:validateDoubleRange minimum="-5.0" maximum="3.0"/>
             </h:inputHidden>
-            <h:inputHidden id="r_hidden" value="#{dotManagedBean.newDotEntity.r}" required="true" autocomplete="off">
+            <h:inputHidden id="r_hidden" value="#{dotManagedBean.currentEntity.r}" required="true" autocomplete="off">
                <f:validateLength maximum="10"/>
                <f:validateDoubleRange minimum="1.0" maximum="4.0"/>
             </h:inputHidden>
@@ -32,7 +32,7 @@
          <h:form class="ui-form" id="dot_form">
             <h3>Проверка попадания точки</h3>
             <div class="form-row option-command-link">
-               <h:inputHidden id="x" value="#{dotManagedBean.newDotEntity.x}" required="true" autocomplete="off">
+               <h:inputHidden id="x" value="#{dotManagedBean.currentEntity.x}" required="true" autocomplete="off">
                   <f:validateLength maximum="10"/>
                   <f:validateDoubleRange minimum="-4.0" maximum="4.0"/>
                </h:inputHidden>
@@ -48,7 +48,7 @@
                <h:commandLink id="x9" value="4" onclick="selectX(4.0, mainForm.name + ':x9'); return false;"/>
             </div>
             <div class="form-row">
-               <h:inputText id="y" value="#{dotManagedBean.newDotEntity.y}"
+               <h:inputText id="y" value="#{dotManagedBean.currentEntity.y}"
                             required="true" autocomplete="off" a:placeholder="Число от -5 до 3...">
                   <f:validateLength maximum="10"/>
                   <f:validateDoubleRange minimum="-5.0" maximum="3.0"/>
@@ -56,7 +56,7 @@
                <h:outputLabel for="y" class="text-input-label">Y:</h:outputLabel>
             </div>
             <div class="form-row">
-               <h:inputText id="r" value="#{dotManagedBean.newDotEntity.r}"
+               <h:inputText id="r" value="#{dotManagedBean.currentEntity.r}"
                             required="true" autocomplete="off" a:placeholder="Число от 1 до 4...">
                   <f:validateLength maximum="10"/>
                   <f:validateDoubleRange minimum="1.0" maximum="4.0"/>

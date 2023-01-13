@@ -31,7 +31,7 @@ public class DotManagedBean implements Serializable {
         );
     }
 
-    public DotEntity getNewDotEntity() {
+    public DotEntity getCurrentEntity() {
         return currentEntity;
     }
 
@@ -39,7 +39,7 @@ public class DotManagedBean implements Serializable {
         return dotEntities;
     }
 
-    public void setNewDotEntity(DotEntity newDotEntity) {
+    public void setCurrentEntity(DotEntity newDotEntity) {
         this.currentEntity = newDotEntity;
     }
 
